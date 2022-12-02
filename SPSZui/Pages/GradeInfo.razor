@@ -1,0 +1,58 @@
+@page "/gradeinfo/{studentid:int}"
+@using SPSZDataLayer.GlobalConfig
+@using SPSZDomainLayer.Mapper
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
+
+
+<center><h1>Seznam známek</h1></center>
+<center><h2>Známky od @StudentMapper.FromRow(Config.Connection.StudentTG.GetById(studentid)).Firstname @StudentMapper.FromRow(Config.Connection.StudentTG.GetById(studentid)).Lastname</h2></center>
+<table class="table">
+    <thead>
+        <tr>
+            <th rowspan="2">Předmět</th>
+            <th colspan="10">Váh</th>
+        </tr>
+        <tr>
+            @for (int i = 1; i <= 10; i++)
+            {
+                <th>@i</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subject in gradeService.Subjects)
+        {
+            <tr>
+                <td>@subject.Name</td>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <td>@for(int j = 0; j < gradeService.GetBySubjectAndWeight(subject.Id.Value,i).Count; j++)
+                    {
+                        @gradeService.GetBySubjectAndWeight(subject.Id.Value, i)[j].Value
+                        @if(j < gradeService.GetBySubjectAndWeight(subject.Id.Value, i).Count - 1)
+                        {
+                            <a>,</a>
+                        }
+                    }
+                    </td>
+     
+                }
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@code {
+
+    [ParameterAttribute]
+    public int studentid { get; set; }
+    GradeFilter gradeService = new GradeFilter();
+    
+    protected override void OnInitialized()
+    {
+        gradeService.Load(studentid);
+
+    } 
+}

@@ -10,4 +10,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPSZDomainLayer\SPSZDomainLayer.csproj" />
+  </ItemGroup>
 </Project>

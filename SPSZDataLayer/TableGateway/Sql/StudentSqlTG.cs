@@ -90,5 +90,28 @@ namespace SPSZDataLayer.TableGateway.Sql
             };
             return SqlUtils.MakeNonQuery(query, parameters);
         }
+
+        public List<DataRow> GetStudentsByParentId(int parent_id)
+        {
+            string query = $"SELECT id, first_name, last_name, address FROM {TableName} WHERE parent_id = @parent_id AND type = 'student'";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@parent_id", parent_id)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            return t.Rows.Cast<DataRow>().ToList();
+        }
+
+        public int GetStudentClassId(int id)
+        {
+            string query = $"SELECT class_id FROM {TableName} WHERE id = @id AND type = 'student'";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@id", id)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            var row = SqlUtils.GetSingleRowOrNullOrError(t);
+            return Convert.ToInt32(row["class_id"]);
+        }
     }
 }

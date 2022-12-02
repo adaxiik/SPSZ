@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -7,9 +8,10 @@
 
     <div class="main">
         <div class="top-row px-4">
-            @if (SPSZui.Logic.LoginSystem.IsLoggedIn)
+            @if (LoginSystem.IsLoggedIn)
             {
-                <a>Uživatel je přihlášen s ID @SPSZui.Logic.LoginSystem.Id</a>
+                <a>Přihlášen jako @LoginSystem.LogedAs.Firstname @LoginSystem.LogedAs.Lastname (@GetRole())</a>
+
             }
             else
             {
@@ -22,3 +24,19 @@
         </div>
     </div>
 </div>
+
+@code {
+
+    public string GetRole()
+    {
+        if (LoginSystem.IsLoggedIn)
+        {
+            if(LoginSystem.LogedAs is Teacher)
+                return "Učitel";
+            
+            return "Rodič";
+
+        }
+        return "guest";
+    }
+}

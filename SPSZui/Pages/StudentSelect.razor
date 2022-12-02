@@ -1,13 +1,21 @@
 @page "/studentselect"
-@using Models
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
 
 
 <center><h1>Vyberte Studenta</h1></center>
 <div class="flex-grid-thirds">
-    <StudentItem StudentName="Jan Novák" StudentClass="1.A"/>
-    <StudentItem StudentName="Petr Novák" StudentClass="1.A"/>
+    @foreach (var student in GetStudents())
+    {
+        <StudentItem StudentName="@student.Firstname" StudentClass="@student.GetStudentClass().ClassName" StudentId="@student.Id.Value" />
+    }
 </div>
 
 @code {
+    List<Student> GetStudents()
+    {
+        Parent p = LoginSystem.LogedAs as Parent;
+        return p.GetStudents();
+    }
     
 }

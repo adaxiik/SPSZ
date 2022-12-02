@@ -43,17 +43,6 @@ namespace SPSZDomainLayer
 
         }
 
-        static string PasswordToMD5(string password)
-        {
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-            {
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-            }
-        }
-
         static void FillTeachers()
         {
             var teachers = new List<Teacher>
@@ -62,19 +51,19 @@ namespace SPSZDomainLayer
                     Firstname = "John",
                     Lastname = "Doe",
                     Email = "john.doe@mail.com",
-                    Password = PasswordToMD5("12345678")
+                    Password = DataUtils.ToMD5("12345678")
                 },
                 new Teacher(){
                     Firstname = "Jane",
                     Lastname = "Doe",
                     Email = "jane.doe@mail.com",
-                    Password = PasswordToMD5("Ree")
+                    Password = DataUtils.ToMD5("Ree")
                 },
                 new Teacher(){
                     Firstname = "Jožko",
                     Lastname = "Mrkvička",
                     Email = "jozanek.mrkvicka@mail.com",
-                    Password = PasswordToMD5("1234")
+                    Password = DataUtils.ToMD5("1234")
                 }
             };
             foreach (var teacher in teachers)
@@ -90,19 +79,19 @@ namespace SPSZDomainLayer
                     Firstname = "Jack",
                     Lastname = "Kerouac",
                     Email = "jeck.k@mail.com",
-                    Password = PasswordToMD5("1234")
+                    Password = DataUtils.ToMD5("1234")
                 },
                 new Parent(){
                     Firstname = "Arthur",
                     Lastname = "Rimbaud",
                     Email = "ar@mail.com",
-                    Password = PasswordToMD5("6969")
+                    Password = DataUtils.ToMD5("6969")
                 },
                 new Parent(){
                     Firstname = "William",
                     Lastname = "Blake",
                     Email = "willablejk@mail.com",
-                    Password = PasswordToMD5("ahoj")
+                    Password = DataUtils.ToMD5("ahoj")
                 }
             };
             foreach (var parent in parents)

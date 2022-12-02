@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPSZDataLayer.GlobalConfig;
+using SPSZDomainLayer.Mapper;
 
 namespace SPSZDomainLayer.Model
 {
@@ -14,8 +16,13 @@ namespace SPSZDomainLayer.Model
 
         public List<Student> GetStudents()
         {
-            Students = new List<Student>(); 
-            // TODO: implement
+
+            if (Id is null || Id == -1)
+                return Students;
+        
+
+            var data = Config.Connection.StudentTG.GetStudentsByParentId(Id.Value);
+            Students = StudentMapper.FromRows(data);
             return Students;
         }
 

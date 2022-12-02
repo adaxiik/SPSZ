@@ -175,5 +175,26 @@ namespace SPSZDataLayer.TableGateway.Sql
             return rowsAffected;
         }
 
+        public List<DataRow> GetByStudentId(int student_id)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE student_id = @student_id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@student_id", student_id)
+            };
+            return SqlUtils.MakeQuery(query, parameters).Rows.Cast<DataRow>().ToList();
+        }
+
+        public List<DataRow> GetByStudentIdAndSubjectId(int student_id, int subject_id)
+        {
+            string query = $"SELECT * FROM {TableName} WHERE student_id = @student_id AND subject_id = @subject_id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@student_id", student_id),
+                new SqliteParameter("@subject_id", subject_id)
+            };
+            return SqlUtils.MakeQuery(query, parameters).Rows.Cast<DataRow>().ToList();
+        }
+
     }
 }

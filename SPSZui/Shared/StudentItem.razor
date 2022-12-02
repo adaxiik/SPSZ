@@ -1,4 +1,6 @@
-﻿<div class="student-item">
+﻿
+<div class="student-item" >
+<a href="@infoLink">    
     <div class="student-name">
         <a>
             <span class="oi oi-person"></span>
@@ -12,7 +14,7 @@
             @StudentClass
         </a>
     </div>
-    
+ </a>   
 </div>
 
 
@@ -24,5 +26,10 @@
 
     [Parameter]
     public string StudentClass { get; set; }
+
+    [Parameter]
+    public int StudentId { get; set; }
+
+    string infoLink {get {return "/gradeinfo/" + StudentId + "/";}}
 
 }

@@ -1,5 +1,6 @@
 @page "/login"
-@using Models
+@using UIModel
+@using SPSZDomainLayer.Service
 
 
 <h1>Přihlášení</h1>
@@ -7,14 +8,23 @@
     <div class ="card-body">
         <EditForm Model="loginModel" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            @* <ValidationSummary /> *@
+            
             <div class ="form-group">
-                <label for ="username">Uživatelské jméno</label>
-                <InputText class ="form-control" id ="login" @bind-Value="loginModel.Login" />
+                <label for ="username">Uživatelské ID</label>
+                <InputNumber class ="form-control" id ="login" @bind-Value="loginModel.LoginID" draggable="false" />
+                <ValidationMessage For="() => loginModel.LoginID" />  
+
             </div>
             <div class ="form-group">
                 <label for ="password">Heslo</label>
                 <InputText type="password" class ="form-control" id ="password" @bind-Value="loginModel.Password" />
+                <ValidationMessage For="() => loginModel.Password" />
+                @if (invalidLogin)
+                {
+                    <p style="color:red">Neplatné přihlašovací údaje</p>
+                }
+
             </div>
             <button type ="submit" class ="btn btn-primary">Přihlásit</button>
         </EditForm>
@@ -23,15 +33,16 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
-
+    private bool invalidLogin = false;
     [Inject]
     private NavigationManager navigationManager { get; set; }
     private void HandleValidSubmit()
     {
-        if(SPSZui.Logic.LoginSystem.LogIn(loginModel.Login, loginModel.Password))
+
+        if(LoginSystem.LogIn(loginModel.LoginID, loginModel.Password))
             navigationManager.NavigateTo("/",true);
         else
-            Console.WriteLine("Nepodařilo se přihlásit");
+            invalidLogin = true;
 
     }
 }

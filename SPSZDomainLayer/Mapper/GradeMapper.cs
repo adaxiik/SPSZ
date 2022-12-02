@@ -17,7 +17,7 @@ namespace SPSZDomainLayer.Mapper
                 Value = row.Table.Columns.Contains("value") ? Convert.ToInt32(row["value"]) : throw new Exception("Column Value not found"),
                 Weight = row.Table.Columns.Contains("weight") ? Convert.ToInt32( row["weight"]) : throw new Exception("Column Weight not found"),
                 Description = row.Table.Columns.Contains("description") ?  row["description"] as string : throw new Exception("Column Description not found"),
-                Date = row.Table.Columns.Contains("date") ? (DateTime) row["date"] : throw new Exception("Column Date not found"),
+                Date = row.Table.Columns.Contains("date") ? DateTime.Parse(row["date"].ToString())  : throw new Exception("Column Date not found"),
             };
         }
 

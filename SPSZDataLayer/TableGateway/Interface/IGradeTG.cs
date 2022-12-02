@@ -14,5 +14,7 @@ namespace SPSZDataLayer.TableGateway.Interface
         public int AssignAllInOne(List<DataRow> rows);
 
         public int AssignAllInOne(int student_id, int subject_id, int teacher_id, int grade_id);
+        public List<DataRow> GetByStudentId(int student_id);
+        public List<DataRow> GetByStudentIdAndSubjectId(int student_id, int subject_id);
     }
 }
