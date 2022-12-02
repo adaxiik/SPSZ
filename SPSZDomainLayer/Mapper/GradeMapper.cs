@@ -13,9 +13,9 @@ namespace Mapper
         {
             return new Grade
             {
-                Id = row.Table.Columns.Contains("id") ?  row["id"] as int? : throw new Exception("Column Id not found"),
-                Value = row.Table.Columns.Contains("value") ? (int) row["value"] : throw new Exception("Column Value not found"),
-                Weight = row.Table.Columns.Contains("weight") ? (int) row["weight"] : throw new Exception("Column Weight not found"),
+                Id = row.Table.Columns.Contains("id") ?  Convert.ToInt32(row["id"]) : throw new Exception("Column Id not found"),
+                Value = row.Table.Columns.Contains("value") ? Convert.ToInt32(row["value"]) : throw new Exception("Column Value not found"),
+                Weight = row.Table.Columns.Contains("weight") ? Convert.ToInt32( row["weight"]) : throw new Exception("Column Weight not found"),
                 Description = row.Table.Columns.Contains("description") ?  row["description"] as string : throw new Exception("Column Description not found"),
                 Date = row.Table.Columns.Contains("date") ? (DateTime) row["date"] : throw new Exception("Column Date not found"),
             };

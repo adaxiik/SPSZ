@@ -7,20 +7,20 @@ using Microsoft.Data.Sqlite;
 
 namespace SPSZDataLayer.TableGateway.Sql
 {
-    public class SubjectSqlTG : ISubjectTG
+    public class TeacherSqlTG : ITeacherTG
     {
-        readonly string TableName = "Subject";
+        readonly string TableName = "Person";
 
         public List<DataRow> GetAll()
         {
-            string query = $"SELECT id, name, description, label FROM {TableName}";
+            string query = $"SELECT id, first_name, last_name, email, password FROM {TableName} WHERE type = 'teacher'";
             var t = SqlUtils.MakeQuery(query);
             return t.Rows.Cast<DataRow>().ToList();
         }
 
         public DataRow GetById(int id)
         {
-            string query = $"SELECT id, name, description, label FROM {TableName} WHERE id = @id";
+            string query = $"SELECT id, first_name, last_name, email, password FROM {TableName} WHERE id = @id AND type = 'teacher'";
             List<SqliteParameter> parameters = new List<SqliteParameter>();
             parameters.Add(new SqliteParameter("@id", id));
             var t = SqlUtils.MakeQuery(query, parameters);
@@ -29,12 +29,13 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public int Insert(DataRow row)
         {
-            string query = $"INSERT INTO {TableName} (name, description, label) VALUES (@name, @description, @label)";
+            string query = $"INSERT INTO {TableName} (first_name, last_name, email, password, type) VALUES (@first_name, @last_name, @email, @password, 'teacher')";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
-                new SqliteParameter("@name", row["name"]),
-                new SqliteParameter("@description", row["description"]),
-                new SqliteParameter("@label", row["label"])
+                new SqliteParameter("@first_name", row["first_name"]),
+                new SqliteParameter("@last_name", row["last_name"]),
+                new SqliteParameter("@email", row["email"]),
+                new SqliteParameter("@password", row["password"])
             };
             SqlUtils.MakeNonQuery(query, parameters);
             return SqlUtils.GetLastId();
@@ -42,12 +43,13 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public int Update(DataRow row)
         {
-            string query = $"UPDATE {TableName} SET name = @name, description = @description, label = @label WHERE id = @id";
+            string query = $"UPDATE {TableName} SET first_name = @first_name, last_name = @last_name, email = @email, password = @password WHERE id = @id AND type = 'teacher'";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
-                new SqliteParameter("@name", row["name"]),
-                new SqliteParameter("@description", row["description"]),
-                new SqliteParameter("@label", row["label"]),
+                new SqliteParameter("@first_name", row["first_name"]),
+                new SqliteParameter("@last_name", row["last_name"]),
+                new SqliteParameter("@email", row["email"]),
+                new SqliteParameter("@password", row["password"]),
                 new SqliteParameter("@id", row["id"])
             };
             return SqlUtils.MakeNonQuery(query, parameters);
@@ -55,7 +57,7 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public int DeleteById(int id)
         {
-            string query = $"DELETE FROM {TableName} WHERE id = @id";
+            string query = $"DELETE FROM {TableName} WHERE id = @id AND type = 'teacher'";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
                 new SqliteParameter("@id", id)
@@ -65,9 +67,8 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public void DeleteAll()
         {
-            string query = $"DELETE FROM {TableName}";
+            string query = $"DELETE FROM {TableName} WHERE type = 'teacher'";
             SqlUtils.MakeNonQuery(query);
-            SqlUtils.ResetId(TableName);
         }
     }
 }

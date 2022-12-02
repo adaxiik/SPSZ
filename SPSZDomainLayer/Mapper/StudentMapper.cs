@@ -13,10 +13,10 @@ namespace SPSZDomainLayer.Mapper
         {
             return new Student
             {
-                Id = row.Table.Columns.Contains("id") ?  row["id"] as int? : throw new Exception("Column Id not found"),
-                Firstname = row.Table.Columns.Contains("first_name") ?  row["first_name"] as string : throw new Exception("Column First Name not found"),
-                Lastname = row.Table.Columns.Contains("last_name") ?  row["last_name"] as string : throw new Exception("Column Last Name not found"),
-                Address = row.Table.Columns.Contains("address") ?  row["address"] as string : throw new Exception("Column Address not found"),
+                Id = row.Table.Columns.Contains("id") ? Convert.ToInt32(row["id"])  : throw new Exception("Column Id not found"),
+                Firstname = row.Table.Columns.Contains("first_name") ? (string) row["first_name"]  : throw new Exception("Column First Name not found"),
+                Lastname = row.Table.Columns.Contains("last_name") ? (string) row["last_name"]  : throw new Exception("Column Last Name not found"),
+                Address = row.Table.Columns.Contains("address") ? (string) row["address"]  : throw new Exception("Column Address not found"),
             };
         }
 

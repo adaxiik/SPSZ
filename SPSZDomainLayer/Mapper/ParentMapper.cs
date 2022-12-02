@@ -12,7 +12,7 @@ namespace SPSZDomainLayer.Mapper
         {
             Parent parent = new Parent()
             {
-                Id = row.Table.Columns.Contains("id") ? row["id"] as int? : throw new Exception("Column Id not found"),
+                Id = row.Table.Columns.Contains("id") ? Convert.ToInt32(row["id"]) : throw new Exception("Column Id not found"),
                 Firstname = row.Table.Columns.Contains("first_name") ? row["first_name"] as string : throw new Exception("Column First Name not found"),
                 Lastname = row.Table.Columns.Contains("last_name") ? row["last_name"] as string : throw new Exception("Column Last Name not found"),
                 Email = row.Table.Columns.Contains("email") ? row["email"] as string : throw new Exception("Column Email not found"),

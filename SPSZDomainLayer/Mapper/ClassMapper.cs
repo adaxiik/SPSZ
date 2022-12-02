@@ -13,7 +13,7 @@ namespace Mapper
         {
             return new ClassRoom
             {
-                Id = row.Table.Columns.Contains("id") ?  row["id"] as int? : throw new Exception("Column Id not found"),
+                Id = row.Table.Columns.Contains("id") ?  Convert.ToInt32(row["id"]) : throw new Exception("Column Id not found"),
                 ClassName = row.Table.Columns.Contains("class_name") ?  row["class_name"] as string : throw new Exception("Column ClassName not found"),
             };
         }

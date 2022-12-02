@@ -5,7 +5,20 @@ namespace SPSZDataLayer.GlobalConfig
 {
     public class Config
     {
-        public static IDataConnection Connection { get; private set; } = new SqlConnection();
+        private static IDataConnection _connection;
+        public static readonly bool UseSql = true; 
+        public static IDataConnection Connection {
+            get {
+                if (UseSql)
+                {
+                    return _connection ??= new SqlConnection();
+                }
+                else
+                {
+                    return _connection ??= new CsvConnection();
+                }
+            }
+        }
         public static readonly string SQLConnectionString = "Data Source=SPSZdatabase.db;";
     }
 }
