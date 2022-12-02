@@ -1,0 +1,28 @@
+﻿<div class="student-item">
+    <div class="student-name">
+        <a>
+            <span class="oi oi-person"></span>
+            @StudentName
+        </a>
+    </div>
+   
+    <div class="student-class">
+        <a>
+            <span class="oi oi-bell"></span>
+            @StudentClass
+        </a>
+    </div>
+    
+</div>
+
+
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public string StudentName { get; set; }
+
+    [Parameter]
+    public string StudentClass { get; set; }
+
+}

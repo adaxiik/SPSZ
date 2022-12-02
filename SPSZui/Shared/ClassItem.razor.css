@@ -1,0 +1,28 @@
+.class-item {
+    background-image: linear-gradient(135deg, #10005c 0%, #121432 50%, #3c002c 100%);
+    padding: 20px;
+    color: azure;
+    border-radius: 8px;
+    width: 32%;
+    margin: 0.5%;
+}
+
+.class-title
+{
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.student-count
+{
+    font-size: 1.2em;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .class-item {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+}

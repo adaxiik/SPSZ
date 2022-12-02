@@ -1,0 +1,27 @@
+﻿
+<div class="class-item">
+    <div class="class-title">
+        <a>
+            <span class="oi oi-bell mr-1" aria-hidden="true"></span>
+            <strong>@ClassTitle</strong>
+        </a>
+    </div>
+   
+    <div class="student-count">
+        <a>
+        <span class="oi oi-people mr-1" aria-hidden="true"></span>
+        @StudentCount
+        </a>
+    </div>
+    
+</div>
+
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public string ClassTitle { get; set; }
+    [Parameter]
+
+    public int StudentCount { get; set; }
+}

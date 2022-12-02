@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">
+            @if (SPSZui.Logic.LoginSystem.IsLoggedIn)
+            {
+                <a>Uživatel je přihlášen s ID @SPSZui.Logic.LoginSystem.Id</a>
+            }
+            else
+            {
+                <a>Uživatel není přihlášen</a>
+            }
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+.flex-grid-thirds {
+    display: flex;
+    /* justify-content: space-evenly; */
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.flex-grid-thirds .class-item {
+    width: 32%;
+}
+
+@media (max-width: 640px) {
+
+    .flex-grid-thirds {
+        display: block;
+    }
+}
