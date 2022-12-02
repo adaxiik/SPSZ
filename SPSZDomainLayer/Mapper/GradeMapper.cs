@@ -5,7 +5,7 @@ using System.Linq;
 using SPSZDomainLayer.Mapper;
 using SPSZDomainLayer.Model;
 
-namespace Mapper
+namespace SPSZDomainLayer.Mapper
 {
     public class GradeMapper : IMapper<Grade>
     {

@@ -13,14 +13,14 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public List<DataRow> GetAll()
         {
-            string query = $"SELECT id, name FROM {TableName}";
+            string query = $"SELECT id, class_name FROM {TableName}";
             var t = SqlUtils.MakeQuery(query);
             return t.Rows.Cast<DataRow>().ToList();
         }
 
         public DataRow GetById(int id)
         {
-            string query = $"SELECT id, name FROM {TableName} WHERE id = @id";
+            string query = $"SELECT id, class_name FROM {TableName} WHERE id = @id";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
                 new SqliteParameter("@id", id)
@@ -31,10 +31,10 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public int Insert(DataRow row)
         {
-            string query = $"INSERT INTO {TableName} (name) VALUES (@name)";
+            string query = $"INSERT INTO {TableName} (class_name) VALUES (@class_name)";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
-                new SqliteParameter("@name", row["name"])
+                new SqliteParameter("@class_name", row["class_name"])
             };
             SqlUtils.MakeNonQuery(query, parameters);
             return SqlUtils.GetLastId();
@@ -42,10 +42,10 @@ namespace SPSZDataLayer.TableGateway.Sql
 
         public int Update(DataRow row)
         {
-            string query = $"UPDATE {TableName} SET name = @name WHERE id = @id";
+            string query = $"UPDATE {TableName} SET class_name = @class_name WHERE id = @id";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
-                new SqliteParameter("@name", row["name"]),
+                new SqliteParameter("@class_name", row["class_name"]),
                 new SqliteParameter("@id", row["id"])
             };
             return SqlUtils.MakeNonQuery(query, parameters);

@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Data.Common;
+using System.Security.Cryptography;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using SPSZDataLayer.GlobalConfig;
 using SPSZDomainLayer.Mapper;
 using SPSZDomainLayer.Model;
 using SPSZDataLayer.TableGateway;
+using System.Data;
 
 namespace SPSZDomainLayer
 {
@@ -58,19 +60,19 @@ namespace SPSZDomainLayer
             {
                 new Teacher(){
                     Firstname = "John",
-                    Lastname = "Doe", 
+                    Lastname = "Doe",
                     Email = "john.doe@mail.com",
                     Password = PasswordToMD5("12345678")
                 },
                 new Teacher(){
                     Firstname = "Jane",
-                    Lastname = "Doe", 
+                    Lastname = "Doe",
                     Email = "jane.doe@mail.com",
                     Password = PasswordToMD5("Ree")
                 },
                 new Teacher(){
                     Firstname = "Jožko",
-                    Lastname = "Mrkvička", 
+                    Lastname = "Mrkvička",
                     Email = "jozanek.mrkvicka@mail.com",
                     Password = PasswordToMD5("1234")
                 }
@@ -105,7 +107,7 @@ namespace SPSZDomainLayer
             };
             foreach (var parent in parents)
                 Config.Connection.ParentTG.Insert(ParentMapper.ToRow(parent));
-        
+
         }
 
         static void FillStudents()
@@ -115,42 +117,42 @@ namespace SPSZDomainLayer
                 // add 15 students of parents 
                 new Student(){
                     Firstname = "John",
-                    Lastname = "Rimbaud", 
+                    Lastname = "Rimbaud",
                     Address = "Doe street 1"
                 },
                 new Student(){
                     Firstname = "Yoko",
-                    Lastname = "Rimbaud", 
+                    Lastname = "Rimbaud",
                     Address = "Doe street 1"
                 },
                 new Student(){
                     Firstname = "Adam",
-                    Lastname = "Blake", 
+                    Lastname = "Blake",
                     Address = "Avenue 1"
                 },
                 new Student(){
                     Firstname = "Jane",
-                    Lastname = "Blake", 
+                    Lastname = "Blake",
                     Address = "Avenue 1"
                 },
                 new Student(){
                     Firstname = "Zoe",
-                    Lastname = "Blake", 
+                    Lastname = "Blake",
                     Address = "Avenue 1"
                 },
                 new Student(){
                     Firstname = "Tom",
-                    Lastname = "Kerouac", 
+                    Lastname = "Kerouac",
                     Address = "Klimkovice 1"
                 },
                 new Student(){
                     Firstname = "Liza",
-                    Lastname = "Kerouac", 
+                    Lastname = "Kerouac",
                     Address = "Klimkovice 1"
                 },
                 new Student(){
                     Firstname = "Linda",
-                    Lastname = "Kerouac", 
+                    Lastname = "Kerouac",
                     Address = "Klimkovice 1"
                 },
             };
@@ -161,31 +163,127 @@ namespace SPSZDomainLayer
         static void LinkParents()
         {
             List<Student> students = StudentMapper.FromRows(Config.Connection.StudentTG.GetAll());
-            foreach (var student in students)
-            {
-                Console.WriteLine(student.Firstname + " " + student.Lastname + " ID: " + student.Id);
-                
-            }
 
             foreach (var student in students)
             {
                 var matchingParents = ParentMapper.FromRows(Config.Connection.ParentTG.GetByLastname(student.Lastname));
                 if (matchingParents.Count <= 0)
                     throw new Exception("No matching parent found for student " + student.Firstname + " " + student.Lastname);
-                
+
                 var parent = matchingParents[0];
-                Config.Connection.StudentTG.SetParentId((int)student.Id,(int) parent.Id);
+                Config.Connection.StudentTG.SetParentId((int)student.Id, (int)parent.Id);
             }
 
         }
+        static void FillClasses()
+        {
+            var classes = new List<ClassRoom>
+            {
+                new ClassRoom()
+                {
+                    ClassName = "1.A",
+                },
+                new ClassRoom()
+                {
+                    ClassName = "2.B",
+                },
+            };
+            foreach (var classRoom in classes)
+                Config.Connection.ClassRoomTG.Insert(ClassMapper.ToRow(classRoom));
+        }
+
+        static void LinkStudents()
+        {
+            List<Student> students = StudentMapper.FromRows(Config.Connection.StudentTG.GetAll());
+            int numberOfClasses = Config.Connection.ClassRoomTG.GetAll().Count;
+
+            // fill classes zig-zag
+            for (int i = 0; i < students.Count; i++)
+            {
+                int classId = (i % numberOfClasses) + 1;
+                Config.Connection.StudentTG.SetClassId((int)students[i].Id, classId);
+            }
+        }
+
+        static void FillGrades(int minPerSubject, int maxPerSubject)
+        {
+
+            List<DataRow> gradeInfos = new List<DataRow>();
+            var gradeInfoScheme = new DataTable();
+            gradeInfoScheme.Columns.Add("student_id", typeof(int));
+            gradeInfoScheme.Columns.Add("subject_id", typeof(int));
+            gradeInfoScheme.Columns.Add("teacher_id", typeof(int));
+            gradeInfoScheme.Columns.Add("grade_id", typeof(int));
+
+
+            List<DataRow> toAdd = new List<DataRow>();
+
+            List<Student> students = StudentMapper.FromRows(Config.Connection.StudentTG.GetAll());
+            List<Subject> subjects = SubjectMapper.FromRows(Config.Connection.SubjectTG.GetAll());
+            int teacherCount = Config.Connection.TeacherTG.GetAll().Count;
+
+            Random random = new Random(42069);
+
+            foreach (var student in students)
+            {
+                foreach (var subject in subjects)
+                {
+                    int numberOfGrades = random.Next(minPerSubject, maxPerSubject);
+                    for (int i = 0; i < numberOfGrades; i++)
+                    {
+                        var grade = new Grade()
+                        {
+                            Value = random.Next(1, 6),
+                            Date = DateTime.Now.AddDays(-random.Next(0, 365)),
+                            Weight = random.Next(1, 11),
+
+                        };
+                        toAdd.Add(GradeMapper.ToRow(grade));
+
+                        var r = gradeInfoScheme.NewRow();
+                        r["student_id"] = student.Id;
+                        r["subject_id"] = subject.Id;
+                        r["teacher_id"] = random.Next(1, teacherCount + 1);
+                        gradeInfos.Add(r);
+
+                    }
+                }
+            }
+
+            Config.Connection.GradeTG.Insert(toAdd);
+            for(int i = 0; i < gradeInfos.Count; i++)
+            {
+                gradeInfos[i]["grade_id"] = i + 1;
+            }
+            Config.Connection.GradeTG.AssignAllInOne(gradeInfos);
+
+        }
+
+        static void LOG(string message)
+        {
+            Console.WriteLine($"LOG[{DateTime.Now.ToString("HH:mm:ss")}] {message}");
+        }
         public static void Execute()
         {
+            LOG("Clearing database");
             ClearAllTables();
+            LOG("Filling subjects");
             FillSubjects();
+            LOG("Filling teachers");
             FillTeachers();
+            LOG("Filling parents");
             FillParents();
+            LOG("Filling students");
             FillStudents();
+            LOG("Linking parents");
             LinkParents();
+            LOG("Filling classes");
+            FillClasses();
+            LOG("Linking students");
+            LinkStudents();
+            LOG("Filling grades");
+            FillGrades(5, 10);
+            LOG("Done");
         }
     }
 }

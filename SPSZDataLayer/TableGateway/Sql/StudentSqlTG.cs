@@ -69,12 +69,23 @@ namespace SPSZDataLayer.TableGateway.Sql
             SqlUtils.MakeNonQuery(query);
         }
 
-        public int SetParentId(int id, int parentId)
+        public int SetParentId(int id, int parent_id)
         {
             string query = $"UPDATE {TableName} SET parent_id = @parent_id WHERE id = @id AND type = 'student'";
             List<SqliteParameter> parameters = new List<SqliteParameter>()
             {
-                new SqliteParameter("@parent_id", parentId),
+                new SqliteParameter("@parent_id", parent_id),
+                new SqliteParameter("@id", id)
+            };
+            return SqlUtils.MakeNonQuery(query, parameters);
+        }
+
+        public int SetClassId(int id, int class_id)
+        {
+            string query = $"UPDATE {TableName} SET class_id = @class_id WHERE id = @id AND type = 'student'";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@class_id", class_id),
                 new SqliteParameter("@id", id)
             };
             return SqlUtils.MakeNonQuery(query, parameters);
