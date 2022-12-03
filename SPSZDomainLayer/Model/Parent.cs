@@ -5,7 +5,7 @@ using SPSZDomainLayer.Mapper;
 
 namespace SPSZDomainLayer.Model
 {
-    public class Parent : Person
+    public class Parent : Person, IMailable
     {
         public string Email { get; set; }
         public string Password { get; set; }
@@ -26,6 +26,16 @@ namespace SPSZDomainLayer.Model
             return Students;
         }
 
+        public static Parent GetByID(int id)
+        {
+            var data = Config.Connection.ParentTG.GetById(id);
+            return ParentMapper.FromRow(data);
+        }
 
+        public static List<Parent> GetAll()
+        {
+            var data = Config.Connection.ParentTG.GetAll();
+            return ParentMapper.FromRows(data);
+        }
     }
 }

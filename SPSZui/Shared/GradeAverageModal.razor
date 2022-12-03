@@ -1,0 +1,89 @@
+@using SPSZDomainLayer.Service
+@inject IJSRuntime JSRuntime;
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document" style="max-width: 600px ;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Průměry známek</h5>
+                <button type="button" @onclick="() => Close()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Předmět</th>
+                        <th scope="col">Průměr</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Averages)
+                    {
+                        <tr>
+                            <td>@item.Subject.Name</td>
+                            <td>@item.Average.ToString("0.##")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    @onclick="() => Close()">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public int studentId { get; set; }
+
+
+
+    public List<GradeAverageService.GradeAverageInfo> Averages { get; set; }
+
+    override protected void OnInitialized()
+    {
+        base.OnInitialized();
+        Averages = GradeAverageService.GetAverage(studentId);
+        
+    }
+
+
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

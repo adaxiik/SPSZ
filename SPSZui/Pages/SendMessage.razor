@@ -1,0 +1,85 @@
+@page "/mailbox/send"
+@using SPSZDomainLayer.Model
+@using UIModel
+@using SPSZDomainLayer.Service
+@using SPSZDomainLayer.TransactionScript
+
+
+<h1>Odeslat Zprávu</h1>
+<div class="card">
+    <div class="card-body">
+        <EditForm Model="sendMessageModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            @* <ValidationSummary /> *@
+
+            <div class="form-group">
+                <label for="recipient">Příjemce</label>
+                <InputSelect id="recipient" class="form-control" @bind-Value="sendMessageModel.SenderId">
+                    @foreach (var r in MailboxService.GetAvailableRecepients())
+                    {
+                        <option value="@r.Id">@r.Email</option>
+                    }
+
+                </InputSelect>
+
+            </div>
+            <div class="form-group">
+                <label for="subject">Předmět</label>
+                <InputText id="subject" class="form-control" @bind-Value="sendMessageModel.Subject" />
+
+            </div>
+
+            <div class="form-group">
+                <label for="message">Zpráva</label>
+                <InputTextArea id="message" class="form-control" @bind-Value="sendMessageModel.Message" />
+
+            </div>
+
+            @if(invalidInput)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @errorMessage
+                </div>
+            }
+                
+            <button type="submit" class="btn btn-primary">Odeslat Zprávu</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+
+    private SendMessageModel sendMessageModel = new SendMessageModel();
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    bool invalidInput = false;
+    string errorMessage = string.Empty;
+    private void HandleValidSubmit()
+    {
+        Mail mail = new Mail();
+        mail.Subject = sendMessageModel.Subject;
+        mail.Message = sendMessageModel.Message;
+        mail.Date = DateTime.Now;
+
+        bool success = MailboxService.SendMail(mail, sendMessageModel.RecipientId ,sendMessageModel.SenderId);
+        if (success)
+        {
+            navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            invalidInput = true;
+            errorMessage = "Nepodařilo se odeslat zprávu";
+        }
+
+    }
+
+   
+
+    protected override void OnInitialized()
+    {
+
+    }
+}

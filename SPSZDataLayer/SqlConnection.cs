@@ -12,6 +12,7 @@ namespace SPSZDataLayer
         public IParentTG ParentTG { get; } = new ParentSqlTG();
         public IGradeTG GradeTG { get; } = new GradeSqlTG();
         public IClassRoomTG ClassRoomTG { get; } = new ClassRoomSqlTG();
+        public IMailboxTG MailboxTG { get; } = new MailboxSqlTG();
 
     }
 }

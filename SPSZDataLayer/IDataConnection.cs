@@ -12,6 +12,7 @@ namespace SPSZDataLayer
         IStudentTG StudentTG { get; }
         IParentTG ParentTG { get; }
         IGradeTG GradeTG { get; }
+        IMailboxTG MailboxTG { get; }
         
     }
 }

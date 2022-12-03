@@ -15,5 +15,7 @@ namespace SPSZDataLayer
         public IParentTG ParentTG { get; } = new ParentCsvTG();
 
         public IGradeTG GradeTG { get; } = new GradeCsvTG();
+
+        public IMailboxTG MailboxTG { get; } = new MailboxCsvTG();
     }
 }
