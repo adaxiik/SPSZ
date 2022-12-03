@@ -92,6 +92,12 @@ namespace SPSZDomainLayer
                     Lastname = "Blake",
                     Email = "willablejk@mail.com",
                     Password = DataUtils.ToMD5("ahoj")
+                },
+                new Parent(){
+                    Firstname = "Čestmír",
+                    Lastname = "Ptáček",
+                    Email = "ptak@mail.com",
+                    Password = DataUtils.ToMD5("ahoj")
                 }
             };
             foreach (var parent in parents)
@@ -144,6 +150,11 @@ namespace SPSZDomainLayer
                     Lastname = "Kerouac",
                     Address = "Klimkovice 1"
                 },
+                new Student(){
+                    Firstname = "Žožo",
+                    Lastname = "Ptáček",
+                    Address = "Za polem 10"
+                }
             };
             foreach (var student in students)
                 Config.Connection.StudentTG.Insert(StudentMapper.ToRow(student));
@@ -179,6 +190,9 @@ namespace SPSZDomainLayer
             };
             foreach (var classRoom in classes)
                 Config.Connection.ClassRoomTG.Insert(ClassMapper.ToRow(classRoom));
+
+            Config.Connection.ClassRoomTG.AssignClassRoomToTeacher(3,1);
+            Config.Connection.ClassRoomTG.AssignClassRoomToTeacher(3,2);
         }
 
         static void LinkStudents()

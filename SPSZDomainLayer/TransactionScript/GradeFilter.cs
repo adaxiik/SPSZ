@@ -7,7 +7,7 @@ using SPSZDataLayer.TableGateway;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SPSZDomainLayer.Service
+namespace SPSZDomainLayer.TransactionScript
 {
     public class GradeFilter
     {

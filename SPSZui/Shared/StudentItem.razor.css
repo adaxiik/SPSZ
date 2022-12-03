@@ -26,7 +26,7 @@ a, a:hover, a:visited, a:active {
 }
 
 @media (max-width: 640px) {
-    .class-item {
+    .student-item {
         width: 100%;
         margin: 0 0 10px 0;
     }

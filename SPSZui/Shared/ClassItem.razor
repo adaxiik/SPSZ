@@ -1,27 +1,28 @@
-﻿
+﻿@using SPSZDomainLayer.Model
+
 <div class="class-item">
+    <a href="@infoLink">    
     <div class="class-title">
         <a>
             <span class="oi oi-bell mr-1" aria-hidden="true"></span>
-            <strong>@ClassTitle</strong>
+            <strong>@ClassO.ClassName</strong>
         </a>
     </div>
    
     <div class="student-count">
         <a>
         <span class="oi oi-people mr-1" aria-hidden="true"></span>
-        @StudentCount
+        @ClassO.GetStudents().Count
         </a>
     </div>
-    
+    </a>
 </div>
 
 
 @code {
     // Demonstrates how a parent component can supply parameters
     [Parameter]
-    public string ClassTitle { get; set; }
-    [Parameter]
+    public ClassRoom ClassO { get; set; }
 
-    public int StudentCount { get; set; }
+    string infoLink {get {return "/classinfo/" + ClassO.Id.Value + "/";}}
 }

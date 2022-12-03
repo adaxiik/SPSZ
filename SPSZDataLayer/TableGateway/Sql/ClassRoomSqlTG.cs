@@ -67,5 +67,27 @@ namespace SPSZDataLayer.TableGateway.Sql
             SqlUtils.MakeNonQuery(query);
             SqlUtils.ResetId(TableName);
         }
+
+        public List<DataRow> GetClassRoomsByTeacherId(int teacherId)
+        {
+            string query = $"SELECT id, class_name FROM {TableName} WHERE teacher_id = @teacher_id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@teacher_id", teacherId)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            return t.Rows.Cast<DataRow>().ToList();
+        }
+
+        public int AssignClassRoomToTeacher(int teacherId, int classRoomId)
+        {
+            string query = $"UPDATE {TableName} SET teacher_id = @teacher_id WHERE id = @id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@teacher_id", teacherId),
+                new SqliteParameter("@id", classRoomId)
+            };
+            return SqlUtils.MakeNonQuery(query, parameters);
+        }
     }
 }

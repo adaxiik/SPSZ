@@ -1,40 +1,52 @@
-@page "/classinfo"
+@page "/classinfo/{classid:int}"
+@using SPSZDataLayer.GlobalConfig
+@using SPSZDomainLayer.Model
 
 
-<h1>2.B</h1>
+<h1>@classRoom.ClassName - @students.Count @GetStudentFormat()</h1>
 <table class="table">
-<tr>
-<th>First Name</th>
-<th>Last Name</th>
-<th>Average Grade</th>
-<th></th>
-</tr>
-@foreach (var student in students)
-{
     <tr>
-        <td>@student.FirstName</td>
-        <td>@student.LastName</td>
-        <td>@student.AverageGrade</td>
-        <td><a href="/ classinfo / @student.Id">More Info</a></td>
+        <th>Jméno</th>
+        <th>Příjmení</th>
+        <th>Průměrná známka</th>
+        <th></th>
     </tr>
-}
+    @foreach (var student in students)
+    {
+        <tr>
+            <td>@student.Firstname</td>
+            <td>@student.Lastname</td>
+            <td>4.20</td>
+            <td><a href="/classinfo/">Více</a></td>
+        </tr>
+    }
 </table>
 
 @code {
-    struct Student
+
+    [ParameterAttribute]
+    public int classid { get; set; }
+    ClassRoom classRoom { get; set; }
+    List<Student> students { get; set; }
+
+    protected override void OnInitialized()
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public float AverageGrade { get; set; }
+        classRoom = ClassRoom.GetByID(classid);
+        students = classRoom.GetStudents();
     }
 
-    List<Student> students = new List<Student>()
+    string GetStudentFormat()
     {
-        new Student() { FirstName = "John", LastName = "Doe", AverageGrade = 90 },
-        new Student() { FirstName = "Jane", LastName = "Doe", AverageGrade = 80 },
-        new Student() { FirstName = "Joe", LastName = "Doe", AverageGrade = 70 },
-        new Student() { FirstName = "Jill", LastName = "Doe", AverageGrade = 60 },
-        new Student() { FirstName = "Jack", LastName = "Doe", AverageGrade = 50 },
-    };
+        if (students.Count == 0)
+            return "studentů";
+        else if (students.Count == 1)
+            return "student";
+        else if (students.Count > 1 && students.Count < 5)
+            return "studenti";
+        else
+            return "studentů";
+
+    }
+
+
 }

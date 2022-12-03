@@ -113,5 +113,17 @@ namespace SPSZDataLayer.TableGateway.Sql
             var row = SqlUtils.GetSingleRowOrNullOrError(t);
             return Convert.ToInt32(row["class_id"]);
         }
+
+        public List<DataRow> GetStudentsByClassId(int class_id)
+        {
+            string query = $"SELECT id, first_name, last_name, address FROM {TableName} WHERE class_id = @class_id AND type = 'student'";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@class_id", class_id)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            return t.Rows.Cast<DataRow>().ToList();
+        }
+
     }
 }

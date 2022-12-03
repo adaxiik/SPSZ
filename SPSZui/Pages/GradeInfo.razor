@@ -2,16 +2,16 @@
 @using SPSZDataLayer.GlobalConfig
 @using SPSZDomainLayer.Mapper
 @using SPSZDomainLayer.Model
-@using SPSZDomainLayer.Service
+@using SPSZDomainLayer.TransactionScript
 
 
 <center><h1>Seznam známek</h1></center>
-<center><h2>Známky od @StudentMapper.FromRow(Config.Connection.StudentTG.GetById(studentid)).Firstname @StudentMapper.FromRow(Config.Connection.StudentTG.GetById(studentid)).Lastname</h2></center>
+<center><h2>Známky od @student.Firstname @student.Lastname</h2></center>
 <table class="table">
     <thead>
         <tr>
             <th rowspan="2">Předmět</th>
-            <th colspan="10">Váh</th>
+            <th colspan="10">Váha</th>
         </tr>
         <tr>
             @for (int i = 1; i <= 10; i++)
@@ -49,10 +49,12 @@
     [ParameterAttribute]
     public int studentid { get; set; }
     GradeFilter gradeService = new GradeFilter();
+    Student student;
     
     protected override void OnInitialized()
     {
         gradeService.Load(studentid);
-
-    } 
+        student = Student.GetByID(studentid);
+    }
+     
 }

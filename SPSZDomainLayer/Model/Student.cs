@@ -22,5 +22,10 @@ namespace SPSZDomainLayer.Model
             return ClassMapper.FromRow(Config.Connection.ClassRoomTG.GetById(i));
         }
 
+        public static Student GetByID(int id)
+        {
+            return StudentMapper.FromRow(Config.Connection.StudentTG.GetById(id));
+        }
+
     }
 }

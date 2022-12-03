@@ -1,16 +1,23 @@
 @page "/classselect"
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
 
 
 
 <center><h1>Vyberte třídu</h1></center>
 <div class="flex-grid-thirds">
-  <ClassItem ClassTitle="1.A" StudentCount="420"/>
-  <ClassItem ClassTitle="2.B" StudentCount="69"/>
-  <ClassItem ClassTitle="3.A" StudentCount="34"/>
-  <ClassItem ClassTitle="4.B" StudentCount="35"/>
-  <ClassItem ClassTitle="5.C" StudentCount="42"/> 
+    @foreach (var c in GetClasses())
+    {
+        <ClassItem ClassO="@c" />
+    }
+        
+    
 </div>
 
 @code {
-    
+    List<ClassRoom> GetClasses()
+    {
+        Teacher t = LoginSystem.LogedAs as Teacher;
+        return t.GetClassRooms();
+    }
 }
