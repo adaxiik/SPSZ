@@ -1,0 +1,17 @@
+id;first_name;last_name;type;address;email;password;parent_id;class_id
+1;John;Doe;teacher;;john.doe@mail.com;25d55ad283aa400af464c76d713c07ad;;
+2;Jane;Doe;teacher;;jane.doe@mail.com;4d96d9d92eea3dd3a1ca5b2f1ea9320d;;
+3;Jožko;Mrkvička;teacher;;jozanek.mrkvicka@mail.com;81dc9bdb52d04dc20036dbd8313ed055;;
+4;Jack;Kerouac;parent;;jeck.k@mail.com;81dc9bdb52d04dc20036dbd8313ed055;;
+5;Arthur;Rimbaud;parent;;ar@mail.com;7813d1590d28a7dd372ad54b5d29d033;;
+6;William;Blake;parent;;willablejk@mail.com;79c2b46ce2594ecbcb5b73e928345492;;
+7;Čestmír;Ptáček;parent;;ptak@mail.com;79c2b46ce2594ecbcb5b73e928345492;;
+8;John;Rimbaud;student;Doe street 1;;;5;1
+9;Yoko;Rimbaud;student;Doe street 1;;;5;2
+10;Adam;Blake;student;Avenue 1;;;6;1
+11;Jane;Blake;student;Avenue 1;;;6;2
+12;Zoe;Blake;student;Avenue 1;;;6;1
+13;Tom;Kerouac;student;Klimkovice 1;;;4;2
+14;Liza;Kerouac;student;Klimkovice 1;;;4;1
+15;Linda;Kerouac;student;Klimkovice 1;;;4;2
+16;Žožo;Ptáček;student;Za polem 10;;;7;1

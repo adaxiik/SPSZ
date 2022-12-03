@@ -25,5 +25,11 @@ namespace SPSZDomainLayer.Model
 
             return ClassRooms;
         }
+
+        public static Teacher GetByID(int id)
+        {
+            var data = Config.Connection.TeacherTG.GetById(id);
+            return TeacherMapper.FromRow(data);
+        }
     }
 }

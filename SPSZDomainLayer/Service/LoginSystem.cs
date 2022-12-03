@@ -9,11 +9,23 @@ namespace SPSZDomainLayer.Service
 {
     public class LoginSystem
     {
-        public static int? Id { get;private set; } = null;
-        public static Person LogedAs { get; private set; } = null;
-        public static bool IsLoggedIn{ get;private set; } = false;
+        private static LoginSystem instance;
+        public static LoginSystem Instance
+        {
+            get
+            {
+                if (instance is null)
+                {
+                    instance = new LoginSystem();
+                }
+                return instance;
+            }
+        }
+        public int? Id { get;private set; } = null;
+        public Person LogedAs { get; private set; } = null;
+        public bool IsLoggedIn{ get;private set; } = false;
 
-        private static bool AsParent(Parent parent, string password)
+        private bool AsParent(Parent parent, string password)
         {
             if (parent.Password == DataUtils.ToMD5(password))
             {
@@ -26,7 +38,7 @@ namespace SPSZDomainLayer.Service
         }
 
 
-        private static bool AsTeacher(Teacher teacher, string pass)
+        private bool AsTeacher(Teacher teacher, string pass)
         {
             if (teacher.Password == DataUtils.ToMD5(pass))
             {
@@ -38,7 +50,7 @@ namespace SPSZDomainLayer.Service
             return false;
         }
 
-        public static bool LogIn(int loginID, string password)
+        public bool LogIn(int loginID, string password)
         {
             var r = Config.Connection.ParentTG.GetById(loginID);
             if (r is null){
@@ -52,7 +64,7 @@ namespace SPSZDomainLayer.Service
             return AsParent(ParentMapper.FromRow(r), password);
 
         }
-        public static void LogOut()
+        public void LogOut()
         {
             Id = null;
             IsLoggedIn = false;

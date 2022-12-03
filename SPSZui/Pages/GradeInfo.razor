@@ -5,8 +5,12 @@
 @using SPSZDomainLayer.TransactionScript
 
 
-<center><h1>Seznam známek</h1></center>
-<center><h2>Známky od @student.Firstname @student.Lastname</h2></center>
+<center>
+    <h1>Seznam známek</h1>
+</center>
+<center>
+    <h2>Známky od @student.Firstname @student.Lastname</h2>
+</center>
 <table class="table">
     <thead>
         <tr>
@@ -21,40 +25,54 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var subject in gradeService.Subjects)
+        @foreach (var subject in gradeTs.Subjects)
         {
             <tr>
                 <td>@subject.Name</td>
                 @for (int i = 1; i <= 10; i++)
                 {
-                    <td>@for(int j = 0; j < gradeService.GetBySubjectAndWeight(subject.Id.Value,i).Count; j++)
-                    {
-                        @gradeService.GetBySubjectAndWeight(subject.Id.Value, i)[j].Value
-                        @if(j < gradeService.GetBySubjectAndWeight(subject.Id.Value, i).Count - 1)
+                    <td>@for (int j = 0; j < gradeTs.GetBySubjectAndWeight(subject.Id.Value, i).Count; j++)
                         {
-                            <a>,</a>
+                            <a href="@GetGradeLink(gradeTs.GetBySubjectAndWeight(subject.Id.Value, i)[j].Id.Value)">@gradeTs.GetBySubjectAndWeight(subject.Id.Value,
+                    i)[j].Value </a>
+                            @if (j < gradeTs.GetBySubjectAndWeight(subject.Id.Value, i).Count - 1)
+                            {
+                                <a>,</a>
+                            }
                         }
-                    }
                     </td>
-     
+
                 }
             </tr>
         }
     </tbody>
 
 </table>
+<ExportModal @ref="modal"></ExportModal>
+<center>
+    <button type="button" class="btn btn-primary" @onclick="() => modal.Open()">Export</button>
+</center>
+
 
 @code {
 
+    ExportModal modal;
+
+
     [ParameterAttribute]
     public int studentid { get; set; }
-    GradeFilter gradeService = new GradeFilter();
+    GradeFilter gradeTs = new GradeFilter();
     Student student;
-    
+
+
     protected override void OnInitialized()
     {
-        gradeService.Load(studentid);
+        gradeTs.Load(studentid);
         student = Student.GetByID(studentid);
     }
-     
+    string GetGradeLink(int id)
+    {
+        return $"/gradeinfo/{studentid}/detail/{id}";
+    }
+
 }

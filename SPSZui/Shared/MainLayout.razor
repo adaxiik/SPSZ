@@ -8,9 +8,9 @@
 
     <div class="main">
         <div class="top-row px-4">
-            @if (LoginSystem.IsLoggedIn)
+            @if (LoginSystem.Instance.IsLoggedIn)
             {
-                <a>Přihlášen jako @LoginSystem.LogedAs.Firstname @LoginSystem.LogedAs.Lastname (@GetRole())</a>
+                <a>Přihlášen jako @LoginSystem.Instance.LogedAs.Firstname @LoginSystem.Instance.LogedAs.Lastname (@GetRole())</a>
 
             }
             else
@@ -29,9 +29,9 @@
 
     public string GetRole()
     {
-        if (LoginSystem.IsLoggedIn)
+        if (LoginSystem.Instance.IsLoggedIn)
         {
-            if(LoginSystem.LogedAs is Teacher)
+            if(LoginSystem.Instance.LogedAs is Teacher)
                 return "Učitel";
             
             return "Rodič";

@@ -196,5 +196,37 @@ namespace SPSZDataLayer.TableGateway.Sql
             return SqlUtils.MakeQuery(query, parameters).Rows.Cast<DataRow>().ToList();
         }
 
+        public int GetStudentID(int grade_id)
+        {
+            string query = $"SELECT student_id FROM {TableName} WHERE id = @id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@id", grade_id)
+            };
+            return Convert.ToInt32(SqlUtils.MakeQuery(query, parameters).Rows[0]["student_id"]);
+        }
+
+        public int GetSubjectID(int grade_id)
+        {
+            string query = $"SELECT subject_id FROM {TableName} WHERE id = @id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@id", grade_id)
+            };
+            return Convert.ToInt32(SqlUtils.MakeQuery(query, parameters).Rows[0]["subject_id"]);
+        }
+
+        public int GetTeacherID(int grade_id)
+        {
+            string query = $"SELECT teacher_id FROM {TableName} WHERE id = @id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@id", grade_id)
+            };
+            return Convert.ToInt32(SqlUtils.MakeQuery(query, parameters).Rows[0]["teacher_id"]) ;
+        }
+
+        
+
     }
 }

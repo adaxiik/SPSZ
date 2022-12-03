@@ -20,7 +20,7 @@ namespace SPSZDomainLayer.TransactionScript
         public List<Subject> Subjects { get; private set; }
         public void Load(int studentId)
         {
-            Subjects = SubjectMapper.FromRows(Config.Connection.SubjectTG.GetAll());
+            Subjects = Subject.GetAllSubjects();
             var grades = GradeMapper.FromRows(Config.Connection.GradeTG.GetByStudentId(studentId));
             foreach (var subject in Subjects)
             {

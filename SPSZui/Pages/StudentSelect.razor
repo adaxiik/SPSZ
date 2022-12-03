@@ -14,7 +14,7 @@
 @code {
     List<Student> GetStudents()
     {
-        Parent p = LoginSystem.LogedAs as Parent;
+        Parent p = LoginSystem.Instance.LogedAs as Parent;
         return p.GetStudents();
     }
     

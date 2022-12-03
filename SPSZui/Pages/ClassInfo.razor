@@ -17,7 +17,7 @@
             <td>@student.Firstname</td>
             <td>@student.Lastname</td>
             <td>4.20</td>
-            <td><a href="/classinfo/">Více</a></td>
+            <td><a href="@GradeAddString(student.Id.Value)">Přidat známku</a></td>
         </tr>
     }
 </table>
@@ -28,6 +28,12 @@
     public int classid { get; set; }
     ClassRoom classRoom { get; set; }
     List<Student> students { get; set; }
+    
+    string GradeAddString(int id)
+    {
+        return "classinfo/"+ classid + "/addgrade/" + id;
+    }
+
 
     protected override void OnInitialized()
     {

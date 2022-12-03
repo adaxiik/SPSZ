@@ -70,5 +70,7 @@ namespace SPSZDataLayer.TableGateway.Sql
             string query = $"DELETE FROM {TableName} WHERE type = 'teacher'";
             SqlUtils.MakeNonQuery(query);
         }
+
+        
     }
 }

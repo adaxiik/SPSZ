@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.IO;
+using System.Data.Common;
 using System;
 
 namespace SPSZDataLayer.GlobalConfig
@@ -20,5 +21,9 @@ namespace SPSZDataLayer.GlobalConfig
             }
         }
         public static readonly string SQLConnectionString = "Data Source=SPSZdatabase.db;";
+        // set CsvDBFolder to CsvDatabases/
+        public static readonly string CsvDBFolder = "CsvDatabases";
+        public static readonly string CsvDelimiter = ";";
+
     }
 }

@@ -1,0 +1,60 @@
+@page "/gradeinfo/{studentid:int}/detail/{gradeid:int}/"
+@using SPSZDataLayer.GlobalConfig
+@using SPSZDomainLayer.Mapper
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.TransactionScript
+
+
+<h1>Podrobné informace o známce studenta @student.Firstname @student.Lastname</h1>
+<table class="table">
+    <tr>
+        <th>Známka</th>
+        <th>Váha</th>
+        <th>Datum přidání</th>
+        <th>Popis</th>
+    </tr>
+    <tr>
+        <td>@grade.Value</td>
+        <td>@grade.Weight</td>
+        <td>@grade.Date.ToShortDateString()</td>
+        <td>@grade.Description</td>
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align:center;"><b>Přidal</b></td>
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align:center;">@teacher.Firstname @teacher.Lastname</td>
+    </tr>
+</table>
+
+<button type="button" class="btn btn-primary" @onclick="GoBack">Zpět</button>
+
+@code {
+
+    [ParameterAttribute]
+    public int studentid { get; set; }
+    [ParameterAttribute]
+    public int gradeid { get; set; }
+    
+    Grade grade;
+    Student student;
+    Teacher teacher;
+    Subject subject;
+
+    
+    protected override void OnInitialized()
+    {
+        grade = Grade.GetByID(gradeid);
+        student = Student.GetByID(Grade.GetStudentID(gradeid));
+        teacher = Teacher.GetByID(Grade.GetTeacherID(gradeid));
+        subject = Subject.GetByID(Grade.GetSubjectID(gradeid));
+    }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    void GoBack()
+    {
+        NavigationManager.NavigateTo($"/gradeinfo/{studentid}");
+    }
+     
+}

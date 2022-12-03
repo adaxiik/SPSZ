@@ -1,0 +1,108 @@
+@page "/classinfo/{classid:int}/addgrade/{studentid:int}"
+@using SPSZDomainLayer.Model
+@using UIModel
+@using SPSZDomainLayer.Service
+@using SPSZDomainLayer.TransactionScript
+
+
+<h1>Přidání známky</h1>
+<div class="card">
+    <div class="card-body">
+        <EditForm Model="gradeModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            @* <ValidationSummary /> *@
+
+            <div class="form-group">
+                <label for="value">Známka</label>
+                <InputSelect id="value" class="form-control" @bind-Value="gradeModel.Value">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </InputSelect>
+
+            </div>
+            <div class="form-group">
+                <label for="weight">Váha</label>
+                <InputSelect id="weight" class="form-control" @bind-Value="gradeModel.Weight">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Předmět</label>
+                <InputSelect id="subject" class="form-control" @bind-Value="gradeModel.SubjectID">
+                    @foreach (var subject in GetSubjects())
+                    {
+                        <option value="@subject.Id.Value">@subject.Name</option>
+                    }
+                </InputSelect>
+            </div>
+
+
+            <div class="form-group">
+                <label for="description">Popis známky (nepovinný)</label>
+                <InputText id="description" class="form-control" @bind-Value="gradeModel.Description" />
+
+            </div>
+            @if(invalidInput)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @errorMessage
+                </div>
+            }
+                
+            
+
+            <button type="submit" class="btn btn-primary">Přidat</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    [ParameterAttribute]
+    public int studentid { get; set; }
+    [ParameterAttribute]
+    public int classid { get; set; }
+
+
+    private GradeModel gradeModel = new GradeModel();
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    bool invalidInput = false;
+    string errorMessage = string.Empty;
+    private void HandleValidSubmit()
+    {
+        var g = new Grade()
+        {
+            Value = gradeModel.Value,
+            Weight = gradeModel.Weight,
+            Description = gradeModel.Description,
+            Date = DateTime.Now
+        };  
+
+        bool success = GradeAddition.AddGrade(g, studentid, gradeModel.SubjectID, LoginSystem.Instance.LogedAs.Id.Value, out
+        errorMessage);
+        invalidInput = !success;
+        if (success)
+        {
+            navigationManager.NavigateTo("/classinfo/" + classid);
+        }
+    }
+
+    List<Subject> GetSubjects()
+    {
+        return Subject.GetAllSubjects();
+    }
+
+    protected override void OnInitialized()
+    {
+
+    }
+}

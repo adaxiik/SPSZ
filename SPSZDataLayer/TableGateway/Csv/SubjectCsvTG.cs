@@ -7,37 +7,32 @@ namespace SPSZDataLayer.TableGateway.Csv
 {
     public class SubjectCsvTG : ISubjectTG
     {
-        public string TableName => throw new NotImplementedException();
+        public string TableName = "Subject";
 
-        public List<DataRow> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public List<DataRow> GetAll() => CsvUtils.GetAll(TableName);
 
-        public DataRow GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public DataRow GetById(int id) => CsvUtils.GetById(id, TableName);
 
-        public int Insert(DataRow row)
-        {
-            throw new NotImplementedException();
-        }
+        public int Insert(DataRow row) => CsvUtils.Insert(row, TableName);
 
         public int Update(DataRow row)
         {
-            throw new NotImplementedException();
+            DataTable table = CsvUtils.LoadTable(TableName);
+            foreach (DataRow r in table.Rows)
+                if (r["id"].ToString() == row["id"].ToString())
+                {
+                    r["name"] = row["name"];
+                    r["description"] = row["description"];
+                    r["label"] = row["label"];
+                    CsvUtils.SaveTable(table);
+                    return 1;
+                }
+            return 0;
         }
 
-        public int DeleteById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public int DeleteById(int id) => CsvUtils.DeleteById(id, TableName);
 
-        public void DeleteAll()
-        {
-            throw new NotImplementedException();
-        }
+        public void DeleteAll() => CsvUtils.DeleteAll(TableName);
         
     }
 }
