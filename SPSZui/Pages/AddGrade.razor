@@ -87,7 +87,7 @@
             Date = DateTime.Now
         };  
 
-        bool success = GradeAddition.AddGrade(g, studentid, gradeModel.SubjectID, LoginSystem.Instance.LogedAs.Id.Value, out
+        bool success = GradeAddition.AddGrade(g, studentid, gradeModel.SubjectID, LoginSystemService.Instance.LogedAs.Id.Value, out
         errorMessage);
         invalidInput = !success;
         if (success)

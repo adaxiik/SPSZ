@@ -49,14 +49,17 @@
 
 </table>
 <ExportModal studentId=@studentid @ref="modal"></ExportModal>
+<GradeAverageModal studentId=@studentid @ref="gradeAverageModal"></GradeAverageModal>
 <center>
     <button type="button" class="btn btn-primary" @onclick="() => modal.Open()">Export</button>
+    <button type="button" class="btn btn-primary" @onclick="() => gradeAverageModal.Open()">Zobrazit průměry</button>
 </center>
 
 
 @code {
 
     ExportModal modal;
+    GradeAverageModal gradeAverageModal;
 
 
     [ParameterAttribute]

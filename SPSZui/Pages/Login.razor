@@ -39,7 +39,7 @@
     private void HandleValidSubmit()
     {
 
-        if(LoginSystem.Instance.LogIn(loginModel.LoginID, loginModel.Password))
+        if(LoginSystemService.Instance.LogIn(loginModel.LoginID, loginModel.Password))
             navigationManager.NavigateTo("/",true);
         else
             invalidLogin = true;

@@ -17,7 +17,7 @@
 @code {
     List<ClassRoom> GetClasses()
     {
-        Teacher t = LoginSystem.Instance.LogedAs as Teacher;
+        Teacher t = LoginSystemService.Instance.LogedAs as Teacher;
         return t.GetClassRooms();
     }
 }
