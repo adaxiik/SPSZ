@@ -1,5 +1,8 @@
+@using SPSZDomainLayer.Service
+@inject IJSRuntime JSRuntime;
+
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="max-width: 600px ;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Exportovat známky</h5>
@@ -24,8 +27,9 @@
                         </div>
             </EditForm>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Exportovat</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Zrušit</button>
+                <button type="button" class="btn btn-primary" @onclick=ShowPreview >Náhled</button>
+                <button type="button" class="btn btn-primary" @onclick=SaveToFile>Exportovat</button>
             </div>
         </div>
     </div>
@@ -39,14 +43,31 @@
 
 
 @code {
+
+    [Parameter]
+    public int studentId { get; set; }
+
     class ExportData
     {
         public int ExportType { get; set; } = 0;
-        public string ExportPreview { get; set; } = "Náhled";
+        public string ExportPreview { get; set; } = String.Empty;
     }
 
     ExportData exportData = new ExportData();
     
+    void ShowPreview()
+    {
+        exportData.ExportPreview = exportData.ExportType == 0 ? GradeExport.ExportToCsv(studentId) : GradeExport.ExportToTxt(studentId);
+    }
+
+    void SaveToFile()
+    {
+        string export = exportData.ExportType == 0 ? GradeExport.ExportToCsv(studentId) : GradeExport.ExportToTxt(studentId);
+        string header ="data:text/csv;charset=utf-8,";
+        string output = header + export;
+        JSRuntime.InvokeVoidAsync("open", output, "_blank");
+        
+    }
 
 
 
