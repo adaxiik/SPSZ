@@ -1,6 +1,9 @@
 # SPSZ
 Repository for my Information Systems Development course project
 
+Goal: To make it look like it works :)
+A lot of shortcuts were taken, during the development, because whole project was basically made in 2,5days
+
 # Quick Start
 ```sh
 $ dotnet restore
