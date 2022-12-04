@@ -1,0 +1,54 @@
+@page "/mailbox/inbox/{mailid:int}"
+@using SPSZDomainLayer.Model
+@using UIModel
+@using SPSZDomainLayer.Service
+@using SPSZDomainLayer.TransactionScript
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">@mail.Subject</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Od</label>
+                    <input type="text" class="form-control" disabled="disabled" value="@mail.GetSender().Email">
+                </div>
+                <div class="form-group">
+                    <label>Datum</label>
+                    <input type="text" class="form-control" disabled="disabled" value="@mail.Date.ToShortDateString() - @mail.Date.ToShortTimeString()">
+                </div>
+                <div class="form-group">
+                    <label>Zpráva</label>
+                    <textarea class="form-control" disabled="disabled" rows="10">@mail.Message</textarea>
+                </div>
+            </div>
+        </div>            
+    </div>
+    <a href="/mailbox/inbox" class="btn btn-fill btn-primary">Zpět</a>
+</div>
+
+
+@code {
+
+    [ParameterAttribute]
+    public int mailid { get; set; }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    Mail mail;
+
+
+    protected override void OnInitialized()
+    {
+        mail = MailboxService.GetMailById(mailid);
+    }
+
+    void Back()
+    {
+        navigationManager.NavigateTo("/mailbox/inbox");
+    }
+}

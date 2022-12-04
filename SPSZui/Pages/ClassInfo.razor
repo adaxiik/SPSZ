@@ -1,6 +1,7 @@
 @page "/classinfo/{classid:int}"
 @using SPSZDataLayer.GlobalConfig
 @using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
 
 
 <h1>@classRoom.ClassName - @students.Count @GetStudentFormat()</h1>
@@ -16,7 +17,9 @@
         <tr>
             <td>@student.Firstname</td>
             <td>@student.Lastname</td>
-            <td>4.20</td>
+            <td>
+                <a href="@GradeInfoString(student.Id.Value)">@GradeAverageService.GetGradeAverageAll(student.Id.Value).ToString("0.##")</a>
+            </td>
             <td><a href="@GradeAddString(student.Id.Value)">Přidat známku</a></td>
         </tr>
     }
@@ -34,6 +37,10 @@
         return "classinfo/"+ classid + "/addgrade/" + id;
     }
 
+    string GradeInfoString(int id)
+    {
+        return "/gradeinfo/" + id;
+    }
 
     protected override void OnInitialized()
     {

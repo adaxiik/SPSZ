@@ -9,5 +9,8 @@ namespace SPSZDataLayer.TableGateway.Interface
         void AssignSender(int id, int senderId);
         void AssignRecepient(int id, int recepientId);
         void AssignSenderAndRecepient(int id, int senderId, int recepientId);
+
+        List<DataRow> GetAllMailsOfRecepient(int recepientId);
+        int GetSenderId(int id);
     }
 }

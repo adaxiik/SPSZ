@@ -14,7 +14,7 @@
 
             <div class="form-group">
                 <label for="recipient">Příjemce</label>
-                <InputSelect id="recipient" class="form-control" @bind-Value="sendMessageModel.SenderId">
+                <InputSelect id="recipient" class="form-control" @bind-Value="sendMessageModel.RecipientId">
                     @foreach (var r in MailboxService.GetAvailableRecepients())
                     {
                         <option value="@r.Id">@r.Email</option>
@@ -31,10 +31,10 @@
 
             <div class="form-group">
                 <label for="message">Zpráva</label>
-                <InputTextArea id="message" class="form-control" @bind-Value="sendMessageModel.Message" />
+                <InputTextArea id="message" class="form-control" rows="10" @bind-Value="sendMessageModel.Message" />
 
             </div>
-
+            <ValidationSummary />
             @if(invalidInput)
             {
                 <div class="alert alert-danger" role="alert">
@@ -63,15 +63,11 @@
         mail.Message = sendMessageModel.Message;
         mail.Date = DateTime.Now;
 
-        bool success = MailboxService.SendMail(mail, sendMessageModel.RecipientId ,sendMessageModel.SenderId);
+        bool success = MailboxService.SendMail(mail, sendMessageModel.RecipientId ,LoginSystemService.Instance.Id.Value, out errorMessage);
+        invalidInput = !success;
         if (success)
         {
             navigationManager.NavigateTo("/");
-        }
-        else
-        {
-            invalidInput = true;
-            errorMessage = "Nepodařilo se odeslat zprávu";
         }
 
     }

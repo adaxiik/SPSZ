@@ -9,13 +9,13 @@ namespace SPSZconsole
     {
         static void Main(string[] args)
         {   
+            // JUST FOR DEVELOPMENT PURPOSES
+
+
             // SPSZDomainLayer.FillDatabaseWithDemoData.Execute();
             var row = Config.Connection.SubjectTG.GetById(9);
             var subject = SubjectMapper.FromRow(row);
             Console.WriteLine(subject);
-
-            // var s = new Subject(){Name = "Hudebka", Description = "Zpíváme si", Label = "Hudba"};
-            // Config.Connection.SubjectTG.Insert(SubjectMapper.ToRow(s));
         }
     }
 }

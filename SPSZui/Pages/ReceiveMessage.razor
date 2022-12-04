@@ -1,0 +1,56 @@
+@page "/mailbox/inbox"
+@using SPSZDomainLayer.Model
+@using UIModel
+@using SPSZDomainLayer.Service
+@using SPSZDomainLayer.TransactionScript
+
+
+<h1>Přijaté zprávy</h1>
+
+@if (mails.Count == 0)
+{
+    <h3>Žádné zprávy k zobrazení</h3>
+}
+else
+{
+    <table class="table">
+    <tr>
+        <th>Od</th>
+        <th>Předmět</th>
+        <th>Datum</th>
+        <th></th>
+    </tr>
+    @foreach (var mail in mails)
+        {
+            <tr>
+                <td>@mail.GetSender().Email</td>
+                <td>@mail.Subject</td>
+                <td>@mail.Date.ToShortDateString()</td>
+                <td><a href="@GetMailLink(mail.Id.Value)">Zobrazit</a></td>
+            </tr>
+        }
+    </table>
+}
+
+
+
+@code {
+
+    List<Mail> mails;
+
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        mails = MailboxService.GetMailsOfUser(LoginSystemService.Instance.Id.Value);
+    }
+
+    string GetMailLink(int id)
+    {
+        return $"/mailbox/inbox/{id}";
+    }
+
+}

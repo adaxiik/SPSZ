@@ -1,4 +1,5 @@
 @using SPSZDomainLayer.Service
+@using System.Web
 @inject IJSRuntime JSRuntime;
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
@@ -29,7 +30,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Zrušit</button>
                 <button type="button" class="btn btn-primary" @onclick=ShowPreview >Náhled</button>
-                <button type="button" class="btn btn-primary" @onclick=SaveToFile>Exportovat</button>
+                @* <button type="button" class="btn btn-primary" @onclick=SaveToFile>Exportovat</button> *@
+                <a href="@GetDownloadURL()" class="btn btn-primary" download="@GetFileName()">Exportovat</a>
             </div>
         </div>
     </div>
@@ -60,13 +62,16 @@
         exportData.ExportPreview = exportData.ExportType == 0 ? GradeExportService.ExportToCsv(studentId) : GradeExportService.ExportToTxt(studentId);
     }
 
-    void SaveToFile()
+
+    public string GetDownloadURL()
     {
         string export = exportData.ExportType == 0 ? GradeExportService.ExportToCsv(studentId) : GradeExportService.ExportToTxt(studentId);
-        string header ="data:text/csv;charset=utf-8,";
-        string output = header + export;
-        JSRuntime.InvokeVoidAsync("open", output, "_blank");
-        
+        string header = "data:" + (exportData.ExportType == 0 ? "text/csv" : "text/plain") + ";charset=utf-8,";
+        return header + export;
+    }
+    public string GetFileName()
+    {
+        return exportData.ExportType == 0 ? "znamky.csv" : "znamky.txt";
     }
 
 

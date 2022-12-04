@@ -111,5 +111,28 @@ namespace SPSZDataLayer.TableGateway.Sql
             };
             SqlUtils.MakeNonQuery(query, parameters);
         }
+
+        public List<DataRow> GetAllMailsOfRecepient(int recepientId)
+        {
+            string query = $"SELECT id, subject, message, send_date  FROM {TableName} WHERE recepient_id = @recepient_id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@recepient_id", recepientId)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            return t.Rows.Cast<DataRow>().ToList();
+        }
+
+        public int GetSenderId(int id)
+        {
+            string query = $"SELECT sender_id FROM {TableName} WHERE id = @id";
+            List<SqliteParameter> parameters = new List<SqliteParameter>()
+            {
+                new SqliteParameter("@id", id)
+            };
+            var t = SqlUtils.MakeQuery(query, parameters);
+            var row = SqlUtils.GetSingleRowOrNullOrError(t);
+            return Convert.ToInt32(row["sender_id"]);
+        }
     }
 }

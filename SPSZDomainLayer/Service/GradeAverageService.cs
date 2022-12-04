@@ -36,11 +36,30 @@ namespace SPSZDomainLayer.Service
                     sum += grade.Value * grade.Weight;
                     weightSum += grade.Weight;
                 }
-                double average = (double)sum / weightSum;
-                result.Add(new GradeAverageInfo { Subject = subject, Average = average });
+                if(sum == 0)
+                    result.Add(new GradeAverageInfo() { Subject = subject, Average = 0 });
+                else
+                    result.Add(new GradeAverageInfo() { Subject = subject, Average = (double)sum / weightSum });   
             }
 
             return result;
+        }
+        public static double GetGradeAverageAll(int studentId)
+        {
+            var gradeRows = Config.Connection.GradeTG.GetByStudentId(studentId);
+            var grades = GradeMapper.FromRows(gradeRows);
+            int sum = 0;
+            int weightSum = 0;
+            foreach (var grade in grades)
+            {
+                sum += grade.Value * grade.Weight;
+                weightSum += grade.Weight;
+            }
+            if(sum == 0)
+            {
+                return 0;
+            }
+            return (double)sum / weightSum;
         }
     }
 }
