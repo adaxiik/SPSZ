@@ -71,6 +71,7 @@ namespace SPSZDomainLayer.Service
                 return false;
             }
 
+
             var r = MailMapper.ToRow(mail);
 
             var recepient = LoginSystemService.Instance.LogedAs is Parent ? Config.Connection.TeacherTG.GetById(recepientId) : Config.Connection.ParentTG.GetById(recepientId);
@@ -86,6 +87,7 @@ namespace SPSZDomainLayer.Service
                 errorMessage = "Pravděpodobně jste byl odhlášen ze systému";
                 return false;
             }
+
 
             int mid = Config.Connection.MailboxTG.Insert(r);
 

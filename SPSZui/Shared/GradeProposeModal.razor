@@ -1,0 +1,125 @@
+@using SPSZDomainLayer.Model
+@using SPSZDomainLayer.Service
+@inject IJSRuntime JSRuntime;
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document" style="max-width: 600px ;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Návrh známek na pololetí</h5>
+                <button type="button" @onclick="() => Close()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <div class="form-group">
+            <label for="subject">Předmět</label>
+            <select class ="form-control" id="subject" @onchange="@OnSubjectChange">
+                @foreach (var subject in Subject.GetAllSubjects())
+                {
+                    <option value="@subject.Id.Value">@subject.Name</option>
+                }
+            </select>
+            </div>
+            <div class="form-group">
+                <label for="rounding">Zaokrouhlovací hranice</label>
+            <select class ="form-control" id="rounding" @bind="rounding">
+                @for (double d = 0.1; Math.Ceiling(d*10)/10 <= 1; d += 0.1)
+                {
+                    double dec = Math.Ceiling(d*10)/10;
+                    <option value="@dec">@dec</option>
+                }
+            </select>
+            </div>
+
+            
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Jméno</th>
+                        <th scope="col">Příjmení</th>
+                        <th scope="col">Navrhovaná známka</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var student in classr.Students)
+                    {
+                        <tr>
+                            <td>@student.Firstname</td>
+                            <td>@student.Lastname</td>
+                            <td>
+                                @GradeProposeService.GetProposedGrade(student.Id.Value, subjectId, rounding)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    @onclick="() => Close()">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    [Parameter]
+    public int classId { get; set; }
+    double rounding { get; set; } = 0.5;
+    int subjectId { get; set;} = Subject.GetAllSubjects().First().Id.Value;
+
+    ClassRoom classr;
+
+    override protected void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        classr = ClassRoom.GetByID(classId);
+        classr.GetStudents();
+        
+    }
+
+    public void OnSubjectChange(ChangeEventArgs e)
+    {
+        subjectId = int.Parse(e.Value.ToString());
+
+
+    }
+
+
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

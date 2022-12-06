@@ -4,21 +4,21 @@
 
 
 <h1>Přihlášení</h1>
-<div class ="card">
-    <div class ="card-body">
+<div class="card">
+    <div class="card-body">
         <EditForm Model="loginModel" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             @* <ValidationSummary /> *@
-            
-            <div class ="form-group">
-                <label for ="username">Uživatelské ID</label>
-                <InputNumber class ="form-control" id ="login" @bind-Value="loginModel.LoginID" draggable="false" />
-                <ValidationMessage For="() => loginModel.LoginID" />  
+
+            <div class="form-group">
+                <label for="username">Uživatelské ID</label>
+                <InputNumber class="form-control" id="login" @bind-Value="loginModel.LoginID" draggable="false" />
+                <ValidationMessage For="() => loginModel.LoginID" />
 
             </div>
-            <div class ="form-group">
-                <label for ="password">Heslo</label>
-                <InputText type="password" class ="form-control" id ="password" @bind-Value="loginModel.Password" />
+            <div class="form-group">
+                <label for="password">Heslo</label>
+                <InputText type="password" class="form-control" id="password" @bind-Value="loginModel.Password" />
                 <ValidationMessage For="() => loginModel.Password" />
                 @if (invalidLogin)
                 {
@@ -26,7 +26,7 @@
                 }
 
             </div>
-            <button type ="submit" class ="btn btn-primary">Přihlásit</button>
+            <button type="submit" class="btn btn-primary">Přihlásit</button>
         </EditForm>
     </div>
 </div>
@@ -39,8 +39,8 @@
     private void HandleValidSubmit()
     {
 
-        if(LoginSystemService.Instance.LogIn(loginModel.LoginID, loginModel.Password))
-            navigationManager.NavigateTo("/",true);
+        if (LoginSystemService.Instance.LogIn(loginModel.LoginID, loginModel.Password))
+            navigationManager.NavigateTo("/", true);
         else
             invalidLogin = true;
 

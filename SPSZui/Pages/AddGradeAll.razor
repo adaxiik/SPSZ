@@ -1,11 +1,11 @@
-@page "/classinfo/{classid:int}/addgrade/{studentid:int}"
+@page "/classinfo/{classid:int}/addgradeall"
 @using SPSZDomainLayer.Model
 @using UIModel
 @using SPSZDomainLayer.Service
 @using SPSZDomainLayer.TransactionScript
 
 
-<h1>Přidání známky pro @Student.GetByID(studentid).Firstname @Student.GetByID(studentid).Lastname</h1>
+<h1>Přidání známky třídě @ClassRoom.GetByID(classid).ClassName</h1>
 <div class="card">
     <div class="card-body">
         <EditForm Model="gradeModel" OnValidSubmit="HandleValidSubmit">
@@ -66,8 +66,6 @@
 @code {
 
     [ParameterAttribute]
-    public int studentid { get; set; }
-    [ParameterAttribute]
     public int classid { get; set; }
 
 
@@ -87,8 +85,7 @@
             Date = DateTime.Now
         };  
 
-        bool success = GradeAddition.AddGrade(g, studentid, gradeModel.SubjectID, LoginSystemService.Instance.LogedAs.Id.Value, out
-        errorMessage);
+        bool success = GradeAddition.AddGradeToClass(g,classid,gradeModel.SubjectID,LoginSystemService.Instance.Id.Value, out string message);
         invalidInput = !success;
         if (success)
         {

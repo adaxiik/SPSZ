@@ -7,7 +7,7 @@ namespace SPSZDataLayer.TableGateway.Csv
 {
     public class MailboxCsvTG : IMailboxTG
     {
-        public string TableName = "Grade";
+        public string TableName = "Mailbox";
 
         public void AssignRecepient(int id, int recepientId)
         {

@@ -25,7 +25,16 @@
     }
 </table>
 
+<center>
+    <a class="btn btn-primary" href="@GradeAddToClass(classid)">Přidat známku celé třídě</a>
+    <a class="btn btn-primary" @onclick="() => gradePropose.Open()" href="javascript:void(null);">Navrhnout známky na pololetí</a>
+</center>
+
+<GradeProposeModal classId="@classid" @ref=gradePropose></GradeProposeModal>
+
 @code {
+
+    GradeProposeModal gradePropose;
 
     [ParameterAttribute]
     public int classid { get; set; }
@@ -40,6 +49,11 @@
     string GradeInfoString(int id)
     {
         return "/gradeinfo/" + id;
+    }
+
+    string GradeAddToClass(int id)
+    {
+        return "/classinfo/" + classid + "/addgradeall/";
     }
 
     protected override void OnInitialized()

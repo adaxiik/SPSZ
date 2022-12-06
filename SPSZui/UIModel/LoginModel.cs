@@ -8,7 +8,7 @@ namespace SPSZui.UIModel
 
         [Required (ErrorMessage = "Login ID je povinný údaj")]
         public int LoginID { get; set; }
-        [Required (ErrorMessage = "Password je povinný údaj")]
+        [Required (ErrorMessage = "Heslo je povinný údaj")]
         public string Password { get; set; }
 
     }

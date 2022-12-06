@@ -3,7 +3,7 @@ Repository for my Information Systems Development course project
 
 Goal: To make it look like it works :)
 
-A lot of shortcuts were taken, during the development, because whole project was basically made in 2,5days
+A lot of shortcuts were taken, during the development, because whole project was literally made in 3 days.. also, this is my first time using blazor, so dont judge me :)
 
 # Quick Start
 ```sh

@@ -61,8 +61,13 @@ namespace SPSZDataLayer.TableGateway.Csv
             File.WriteAllLines(path, lines);
         }
 
-        public static int LastRowId(DataTable table) => table.Rows.Count;
-        public static int NextRowId(DataTable table) => table.Rows.Count + 1;
+        public static int LastRowId(DataTable table)
+        {
+            if (table.Rows.Count == 0)
+                return 0;
+            return Convert.ToInt32(table.Rows[table.Rows.Count - 1]["id"].ToString());
+        }
+        public static int NextRowId(DataTable table) => LastRowId(table) + 1;
 
         public static List<DataRow> GetAll(string tableName)
         {
@@ -105,14 +110,20 @@ namespace SPSZDataLayer.TableGateway.Csv
         public static int Insert(DataRow row, string tableName)
         {
             DataTable table = CsvUtils.LoadTable(tableName);
-            DataTable temp = row.Table;
+            DataTable temp = row.Table;     
             
             if (!temp.Columns.Contains("id"))
                 throw new Exception("Column name id does not exist");
 
             int id = CsvUtils.NextRowId(table);
-            row["id"] = id;
-            table.Rows.Add(row.ItemArray);
+            var newr = table.NewRow();
+
+            foreach (DataColumn column in table.Columns)
+                if(temp.Columns.Contains(column.ColumnName))
+                    newr[column.ColumnName] = row[column.ColumnName];
+            
+            newr["id"] = id;
+            table.Rows.Add(newr);
             CsvUtils.SaveTable(table);
             return id;
         }
