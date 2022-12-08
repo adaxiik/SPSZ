@@ -13,7 +13,7 @@ namespace SPSZconsole
 
 
             // SPSZDomainLayer.FillDatabaseWithDemoData.Execute();
-            var row = Config.Connection.SubjectTG.GetById(9);
+            var row = Config.Connection.SubjectTG.GetById(8);
             var subject = SubjectMapper.FromRow(row);
             Console.WriteLine(subject);
         }
